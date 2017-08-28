@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Extract method &apos;private void delay()&apos; from &apos;thread.RunImplEx16.run()&apos; to &apos;thread.RunImplEx16&apos;&#x0D;&#x0A;- Original project: &apos;Chapter13&apos;&#x0D;&#x0A;- Method name: &apos;delay&apos;&#x0D;&#x0A;- Destination type: &apos;thread.RunImplEx16&apos;&#x0D;&#x0A;- Declared visibility: &apos;private&apos;" comments="false" description="Extract method &apos;delay&apos;" destination="0" exceptions="false" flags="786434" id="org.eclipse.jdt.ui.extract.method" input="/src&lt;thread{ThreadEx16.java" name="delay" replace="false" selection="882 68" stamp="1496380706526" version="1.0" visibility="2"/>
+</session>

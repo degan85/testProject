@@ -1,0 +1,96 @@
+package com.degan.test.test;
+
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.TimeUnit;
+
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.State;
+
+
+
+@BenchmarkMode({ Mode.AverageTime })
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
+public class TestForkJoin {
+	
+	
+	public static void main(String[] args) {
+		long from = 1L;
+		long to = 100000000L;
+		
+		testFourCore(from, to);
+		
+		testOneCore(from, to);
+	}
+	
+	@Benchmark
+	public static void testFourCore(long from, long to) {
+		ForkJoinPool pool = new ForkJoinPool();
+		SumTask task = new SumTask(from, to);
+		
+		long start = System.nanoTime();
+		Long result = pool.invoke(task);
+		
+//		System.out.println("Elapsed time(4 core) : "+(System.nanoTime() - start));
+//		System.out.format("sum of %d ~ %d = %d\n", from,to,result);
+//		System.out.println();
+	}
+	
+	@Benchmark
+	public static void testOneCore(long from, long to) {
+		Long result = 0L;
+		long start = System.nanoTime();
+		for(long i=from;i<=to;i++) {
+			result += i;
+		}
+		
+//		System.out.println("Elapsedd time(1 core) : "+(System.nanoTime() - start));
+//		System.out.format("sum of %d ~ %d = %d\n", from,to,result);
+	}
+}
+@State(Scope.Thread)
+class SumTask extends RecursiveTask<Long> {
+	long from;
+	long to;
+	
+	SumTask(long from, long to) {
+		this.from = from;
+		this.to = to;
+	}
+
+		@Override
+	protected Long compute() {
+		long size = to - from + 1;
+		
+		if
+		(size <= 5) {
+			return sum();
+		}
+		
+		long half = (from + to)/2;
+		
+		SumTask leftSum = new SumTask(from, half);
+		SumTask rightSum = new SumTask(half+1,to);
+		
+		leftSum.fork();
+		
+		return rightSum.compute() + leftSum.join();
+	}
+		
+	long sum() {
+		long tmp = 0L;
+		
+		for(long i=from; i<=to;i++) {
+			tmp +=i;
+		}
+		
+		return tmp;
+	}
+
+		
+	
+}
